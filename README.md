@@ -19,9 +19,9 @@
 - localhost:8090
 ## - Enter 
 
-# Input first to add file data it accept tail file ".txt" 
-## + You can add multiple files
-## + After that you click button "ADD" to add data to database and retrain model, you need a lot time to retrain model
+## Input first to add file data it accept tail file ".txt" 
+### + You can add multiple files
+### + After that you click button "ADD" to add data to database and retrain model, you need a lot time to retrain model
 
 ## Input Second to add query. After that, click button search to search this query
 
