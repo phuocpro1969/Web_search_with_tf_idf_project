@@ -4,18 +4,18 @@
 - In frontend, I use html, css, js 
 
 ## - Create environment before 
-  conda env create -f environment.yml
+- conda env create -f environment.yml
 ## - Open folder
 ## - Open terminal
-conda activate django_reactjs
-cd project
+- conda activate django_reactjs
+- cd project
 
 ## - Run 
-python manage.py runserver 8090 
+- python manage.py runserver 8090 
 
 ## - Wait and it open in browser 
 ## - If not run, you write in url browser: 
-localhost:8090
+- localhost:8090
 ## - enter 
 
 # Input first to add file data it accept tail file ".txt" 
