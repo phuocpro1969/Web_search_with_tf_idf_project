@@ -1,7 +1,7 @@
 # Web_search_with_tf_idf_project
 
-### In backend, I use django, django-rest-framework and django knox 
-### In frontend, I use html, css, js 
+In backend, I use django, django-rest-framework and django knox 
+In frontend, I use html, css, js 
 
 ## - Create environment before 
   conda env create -f environment.yml
