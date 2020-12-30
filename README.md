@@ -3,6 +3,7 @@
 - In backend, I used django, django-rest-framework and django knox 
 - In frontend, I used html, css, js 
 
+# RUN PROJECT
 ## - Create environment before 
 - conda env create -f environment.yml
 ## - Open folder
@@ -16,13 +17,13 @@
 ## - Wait and it open in browser 
 ## - If not run, you write in url browser: 
 - localhost:8090
-## - enter 
+## - Enter 
 
 # Input first to add file data it accept tail file ".txt" 
 ## + You can add multiple files
-## + After that you click button add to add data to database and retrain model You need a lot time to retrain model
+## + After that you click button "ADD" to add data to database and retrain model, you need a lot time to retrain model
 
-# Input Second to add query. after that click button search to search this query
+# Input Second to add query. After that, click button search to search this query
 
 # Ok you see answers after query in bellow 
 
