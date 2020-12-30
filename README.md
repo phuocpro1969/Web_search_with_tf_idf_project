@@ -25,6 +25,6 @@
 
 ## Input Second to add query. After that, click button search to search this query
 
-## Ok you see answers after query in bellow 
+## Ok, now you see the answers after queried in bellow 
 
 # Thanks for watching
