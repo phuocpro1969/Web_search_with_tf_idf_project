@@ -1,0 +1,14 @@
+{
+    "cSpell.words": [
+        "Cranfield",
+        "csrf",
+        "csrfmiddlewaretoken",
+        "favicon",
+        "inputfile",
+        "nltk",
+        "punkt",
+        "pyplot"
+    ],
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+}
