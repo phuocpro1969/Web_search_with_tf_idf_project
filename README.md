@@ -23,8 +23,8 @@
 ## + You can add multiple files
 ## + After that you click button "ADD" to add data to database and retrain model, you need a lot time to retrain model
 
-# Input Second to add query. After that, click button search to search this query
+## Input Second to add query. After that, click button search to search this query
 
-# Ok you see answers after query in bellow 
+## Ok you see answers after query in bellow 
 
 # Thanks for watching
