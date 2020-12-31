@@ -88,7 +88,7 @@ $(function () {
             for (index = 0; index < files.length; index++) {
                 if (files[index].length !== 0) {
                     let data = { 'text': files[index] };
-                    fetch('127.0.0.1:8090/data/api/data/', {
+                    fetch('/data/api/data/', {
                         method: 'POST', // or 'PUT'
                         headers: {
                             'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ $(function () {
     $("#get").click(function () {
         const data = {};
 
-        fetch('127.0.0.1:8090/data/api/data/', {
+        fetch('/data/api/data/', {
             method: 'GET', // or 'PUT'
         })
             .then(response => response.json())
