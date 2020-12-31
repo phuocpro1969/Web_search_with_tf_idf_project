@@ -29,7 +29,7 @@ $(function () {
             answer += `
                 <div class="group">
                     <button class="dropdown-btn">
-                        <label>${content[key][0]}.txt </label> - <label>Score: ${content[key][2]}</label>
+                        <label>${content[key][0]}</label> - <label>Score: ${content[key][2]}</label>
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-container">
@@ -83,10 +83,11 @@ $(function () {
     }
 
     let files = [];
+    let fileNames = [];
     $("#send").click(function () {
         if (files.length !== 0) {
-            for (index = 0; index < files.length; index++) {
-                let data = { 'text': files[index] };
+            for (index in files) {
+                let data = { 'name': fileNames[index].name, 'text': files[index] };
                 fetch('/data/api/data/', {
                     method: 'POST', // or 'PUT'
                     headers: {
@@ -100,9 +101,9 @@ $(function () {
                     .catch((error) => {
                     });
             }
-
-            asyncFunction(reTrain, Math.max(200, 10 * files.length));
         }
+
+        asyncFunction(reTrain, Math.max(200, 10 * files.length));
     });
 
     $("#get").click(function () {
@@ -131,6 +132,7 @@ $(function () {
         data = [];
         for (let index in allFiles)
             if (parseInt(index) < allFiles.length) {
+                fileNames.push(this.files[index]);
                 var fr = new FileReader();
                 fr.onload = function () {
                     data.push(this.result);

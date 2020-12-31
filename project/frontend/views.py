@@ -50,7 +50,8 @@ class Index(View):
 
                 answer = {
                     keys: [
-                        self.arr_file[int(values[0])],
+                        Data.objects.get(
+                            id=int(self.arr_file[int(values[0])])).name,
                         Data.objects.get(
                             id=int(self.arr_file[int(values[0])])).text,
                         str(values[1])
