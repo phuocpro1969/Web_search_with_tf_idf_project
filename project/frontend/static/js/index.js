@@ -29,11 +29,11 @@ $(function () {
             answer += `
                 <div class="group">
                     <button class="dropdown-btn">
-                        ${key}.txt
+                        <label>${content[key][0]}.txt </label> - <label>Score: ${content[key][2]}</label>
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-container">
-                        <label>${content[key]}</label>
+                        <p>${content[key][1]}</p>
                     </div>
                 </div>
                 <br />
@@ -86,24 +86,22 @@ $(function () {
     $("#send").click(function () {
         if (files.length !== 0) {
             for (index = 0; index < files.length; index++) {
-                if (files[index].length !== 0) {
-                    let data = { 'text': files[index] };
-                    fetch('/data/api/data/', {
-                        method: 'POST', // or 'PUT'
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data),
+                let data = { 'text': files[index] };
+                fetch('/data/api/data/', {
+                    method: 'POST', // or 'PUT'
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                })
+                    .then(response => response.json())
+                    .then(data => {
                     })
-                        .then(response => response.json())
-                        .then(data => {
-                        })
-                        .catch((error) => {
-                        });
-                }
+                    .catch((error) => {
+                    });
             }
 
-            asyncFunction(reTrain, Math.max(200, 100 * files.length));
+            asyncFunction(reTrain, Math.max(200, 10 * files.length));
         }
     });
 

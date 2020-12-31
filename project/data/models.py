@@ -4,4 +4,4 @@ from django.db import models
 
 
 class Data(models.Model):
-    text = models.CharField(max_length=10000000)
+    text = models.CharField(max_length=10000000, blank=True, null=True)

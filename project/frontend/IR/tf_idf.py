@@ -4,7 +4,8 @@ import pickle
 import re
 
 import nltk
-from data.models import Data
+
+#from data.models import Data
 
 try:
     from nltk import sent_tokenize, word_tokenize
@@ -145,13 +146,13 @@ def get_data_train():
     INPUT_ROOT = os.path.abspath(os.path.dirname(__file__))
     try:
         pkl_file = open(os.path.join(
-            INPUT_ROOT, 'input/data/inverted.pickle'), 'rb')
+            INPUT_ROOT, 'input/data/inverted_.pickle'), 'rb')
         tf_idf_index = pickle.load(pkl_file)
         docs_length = pickle.load(pkl_file)
         pkl_file.close()
 
         pkl_file = open(os.path.join(
-            INPUT_ROOT, 'input/data/index.pickle'), 'rb')
+            INPUT_ROOT, 'input/data/index_.pickle'), 'rb')
         arr_file = pickle.load(pkl_file)
         pkl_file.close()
 
@@ -161,12 +162,12 @@ def get_data_train():
         tf_idf_index = convert_tf_idf_arr(arr)
         docs_length = get_vector_length_of_docs(tf_idf_index)
 
-        with open(os.path.join(INPUT_ROOT, 'input', 'data', 'inverted.pickle'), mode='wb') as f:
+        with open(os.path.join(INPUT_ROOT, 'input', 'data', 'inverted_.pickle'), mode='wb') as f:
             pickle.dump(tf_idf_index, f)
             pickle.dump(docs_length, f)
         f.close()
 
-        with open(os.path.join(INPUT_ROOT, 'input', 'data', 'index.pickle'), mode='wb') as f:
+        with open(os.path.join(INPUT_ROOT, 'input', 'data', 'index_.pickle'), mode='wb') as f:
             pickle.dump(arr_file, f)
         f.close()
 
@@ -254,19 +255,9 @@ def get_relevant_ranking_for_query(query, tf_idf_index, docs_length, arr_file):
     for key in q_score.keys():
         q_score[key] = q_score[key] / (docs_length[key] * (q_length + 0.01))
 
-    # a = sorted(q_score.items(), key=lambda item: item[1], reverse=True)
+    x_retrieved = sorted(
+        q_score.items(), key=lambda item: item[1], reverse=True)
 
-    q_score_linked_with_files = {
-        arr_file[key]: value
-        for key, value in q_score.items()
-    }
-
-    a = sorted(q_score_linked_with_files.items(),
-               key=lambda item: item[1], reverse=True)
-
-    x_retrieved = []
-    for i in a:
-        x_retrieved.append(i[0])
     return x_retrieved
 
 
@@ -299,13 +290,13 @@ def get_data_ground_truth():
     return data
 
 
-def get_Average_Precision(x_retrieved, relevant_docs):
+def get_Average_Precision(x_retrieved, relevant_docs, arr_file):
     # find R_Precision value
     # R_TH = 20
     validation_result = {'R': [], 'P': []}
     count = 0
-    for i in range(len(x_retrieved)):
-        if x_retrieved[i] in relevant_docs:
+    for i in range(len(relevant_docs)):
+        if arr_file[int(x_retrieved[i][0])] in relevant_docs:
             count += 1
         validation_result['R'].append((count / len(relevant_docs)))
         validation_result['P'].append((count / (i + 1)))
@@ -324,7 +315,8 @@ def main():
     data_ground_truth = get_data_ground_truth()
 
     Average_precision_of_all_x_retrieved = {
-        key: get_Average_Precision(value, data_ground_truth[key])
+        key: get_Average_Precision(
+            value, data_ground_truth[key], arr_file)
         for key, value in list_of_x_retrieved.items()
     }
     MAP = 0
