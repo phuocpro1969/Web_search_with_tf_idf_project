@@ -4,8 +4,7 @@ import pickle
 import re
 
 import nltk
-
-#from data.models import Data
+from data.models import Data
 
 try:
     from nltk import sent_tokenize, word_tokenize
