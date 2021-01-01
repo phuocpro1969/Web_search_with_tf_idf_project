@@ -367,4 +367,7 @@ def main():
 
 
 if __name__ == "__main__":
+    t0 = time.clock()
     main()
+    t1 = time.clock() - t0
+    print("Time elapsed: ", t1)
