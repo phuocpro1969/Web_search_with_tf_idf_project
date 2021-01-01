@@ -73,7 +73,7 @@ def get_words_from_text(text):
     words = [w for w in text.split()]
     return words
 
-# Read data
+# Read data and build index
 
 
 def get_text_from_file(filename):
@@ -133,6 +133,8 @@ def build_inverted_index_from_database():
 
     return arr, arr_file
 
+# compute tf-idf
+
 
 def calc_tf_idf(tf, count, num_doc):
     return tf * math.log(1 + count / num_doc)
@@ -148,6 +150,8 @@ def convert_tf_idf_arr(arr):
         ]
     return arr
 
+# find docs train length
+
 
 def get_vector_length_of_docs(tf_idf_index):
     docs_length = dict()
@@ -161,10 +165,13 @@ def get_vector_length_of_docs(tf_idf_index):
         docs_length[key] = math.sqrt(docs_length[key])
     return docs_length
 
+# train data
+
 
 def get_data_train():
     INPUT_ROOT = os.path.abspath(os.path.dirname(__file__))
     try:
+        # clone if files exist
         pkl_file = open(os.path.join(
             INPUT_ROOT, 'input/data/inverted_.pickle'), 'rb')
         tf_idf_index = pickle.load(pkl_file)
@@ -177,6 +184,7 @@ def get_data_train():
         pkl_file.close()
 
     except:
+        # create if file doesn't exist'
         docs_path = os.path.join(INPUT_ROOT, "input/Cranfield")
         arr, arr_file = build_inverted_index(docs_path)
         tf_idf_index = convert_tf_idf_arr(arr)
@@ -224,6 +232,8 @@ def get_data_train_from_database():
 
     return tf_idf_index, docs_length, arr_file
 
+# query
+
 
 def get_relevant_ranking_for_query(query, tf_idf_index, docs_length, arr_file):
     # lấy từ trong query
@@ -237,7 +247,7 @@ def get_relevant_ranking_for_query(query, tf_idf_index, docs_length, arr_file):
         else:
             q_word_with_count[word] += 1
 
-    # tính tf_idf cho các từ trong query
+    # compute tf-idf query
     tf_idf_for_querry = {
         word: calc_tf_idf(
             q_word_with_count[word] / len(q_words),
@@ -250,7 +260,7 @@ def get_relevant_ranking_for_query(query, tf_idf_index, docs_length, arr_file):
     # find q length
     q_length = 0
 
-    # nhân query vô index
+    # multiply
     relevant_between_words = {
         word: [[
             item[0],
@@ -260,11 +270,13 @@ def get_relevant_ranking_for_query(query, tf_idf_index, docs_length, arr_file):
         for word in q_word_with_count.keys()
         if word in tf_idf_index.keys()
     }
+
+    # find query length
     for key, value in tf_idf_for_querry.items():
         q_length += math.pow(value, 2)
     q_length = math.sqrt(q_length)
 
-    # cộng các document có ở trên
+    # count term
     q_score = dict()
     for _, value in relevant_between_words.items():
         for i in value:
@@ -272,6 +284,9 @@ def get_relevant_ranking_for_query(query, tf_idf_index, docs_length, arr_file):
                 q_score[i[0]] = i[1]
             else:
                 q_score[i[0]] += i[1]
+
+    # computer norm
+
     for key in q_score.keys():
         q_score[key] = q_score[key] / (docs_length[key] * (q_length + 0.01))
 
@@ -288,6 +303,8 @@ def open_queries():
         t = i.split('\t')
         result[t[0]] = t[1]
     return result
+
+# get data truth
 
 
 def get_data_ground_truth():
@@ -309,6 +326,8 @@ def get_data_ground_truth():
                 data[cutSpace[0]].append(cutSpace[1])
     return data
 
+# precision
+
 
 def get_Average_Precision(x_retrieved, relevant_docs, arr_file):
     # find R_Precision value
@@ -320,6 +339,8 @@ def get_Average_Precision(x_retrieved, relevant_docs, arr_file):
         validation_result['R'].append((count / len(relevant_docs)))
         validation_result['P'].append((count / (i + 1)))
     return sum(validation_result['P']) / len(validation_result['P'])
+
+# calc MAP
 
 
 def main():
