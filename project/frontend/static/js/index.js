@@ -103,7 +103,6 @@ $(function () {
     }
 
     function reTrain() {
-        console.log("start");
         let csrf = $('input[name=csrfmiddlewaretoken]').val();
         $.ajax({
             url: ".",
@@ -117,7 +116,6 @@ $(function () {
 
             success: function (response, status) {
                 $('#inputfile').val("");
-                console.log("ok");
             }
         });
     }
@@ -154,6 +152,7 @@ $(function () {
         })
             .then(response => response.json())
             .then(data => {
+                console.log(data);
                 renderHtmlAllData(data);
                 runDropDown();
             })
