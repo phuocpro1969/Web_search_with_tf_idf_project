@@ -73,6 +73,11 @@ def get_words_from_text(text):
     words = [w for w in text.split()]
     return words
 
+
+def get_words_from_text_in_vocabulary(text, vocal):
+    words = [w for w in text.split() if w in vocal]
+    return words
+
 # Read data and build index
 
 
@@ -239,7 +244,11 @@ def get_data_train_from_database():
 
 def get_relevant_ranking_for_query(query, tf_idf_index, docs_length, arr_file):
     # lấy từ trong query
-    q_words = get_words_from_text(clear_text(query))
+    q_words = get_words_from_text_in_vocabulary(
+        clear_text(query), tf_idf_index.keys())
+
+    if len(q_words) == 0:
+        return []
 
     # đếm từ
     q_word_with_count = dict()
@@ -248,6 +257,9 @@ def get_relevant_ranking_for_query(query, tf_idf_index, docs_length, arr_file):
             q_word_with_count[word] = 1
         else:
             q_word_with_count[word] += 1
+
+    if len(q_word_with_count) == 0:
+        return []
 
     # compute tf-idf query
     tf_idf_for_querry = {

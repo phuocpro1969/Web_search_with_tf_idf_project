@@ -47,6 +47,8 @@ class Index(View):
                     self.docs_length,
                     self.arr_file
                 )
+                if len(x_retrieved) == 0:
+                    return JsonResponse({'content': []}, status=200)
 
                 answer = {
                     keys: [

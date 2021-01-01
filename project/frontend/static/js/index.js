@@ -15,21 +15,60 @@ $(function () {
                 },
 
                 success: function (response, status) {
-                    content = JSON.parse(response['content']);
+                    if (response['content'].length === 0)
+                        content = [];
+                    else
+                        content = JSON.parse(response['content']);
                     renderHtmlAnswers(content);
                     runDropDown();
+
+                },
+                error: function (response) {
+                    renderHtmlAnswers([]);
                 }
             });
+        } else {
+            renderHtmlAnswers([]);
         }
     })
 
-    function renderHtmlAnswers(content) {
-        let answer = "";
-        for (key in content) {
-            answer += `
+    function renderHtmlAllData(data) {
+        let html = "";
+
+        if (data.length === 0) {
+            html = `<h1 class="text-center" style="color:red;">No data found.</h1>`;
+        }
+        else {
+            for (key in data) {
+                html += `
                 <div class="group">
                     <button class="dropdown-btn">
-                        <label>${content[key][0]}</label> - <label>Score: ${content[key][2]}</label>
+                        <label>ID: ${data[key].id}</label> - <label>Name: ${data[key].name}</label>
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container">
+                        <p>${data[key].text}</p>
+                    </div>
+                </div>
+                <br />
+            `
+            }
+        }
+        $("#app").html(html);
+    }
+
+    function renderHtmlAnswers(content) {
+        let html = "";
+        console.log(content.length)
+        if (content.length === 0 || content === null) {
+            html = `<h1 class="text-center" style="color:red;">No data found.</h1>`;
+        }
+        else {
+            for (key in content) {
+                html += `
+                <div class="group">
+                    <button class="dropdown-btn">
+                        <label>Name: ${content[key][0]}</label> - <label>Score: ${content[key][2]}</label>
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-container">
@@ -38,8 +77,9 @@ $(function () {
                 </div>
                 <br />
             `
+            }
         }
-        $("#app").html(answer);
+        $("#app").html(html);
     }
 
     function runDropDown() {
@@ -106,7 +146,7 @@ $(function () {
         asyncFunction(reTrain, Math.max(200, 10 * files.length));
     });
 
-    $("#get").click(function () {
+    function getAll() {
         const data = {};
 
         fetch('/data/api/data/', {
@@ -114,16 +154,25 @@ $(function () {
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
+                renderHtmlAllData(data);
+                runDropDown();
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
-    });
+    }
+
+    $("#get").click(function () { getAll() });
 
     function asyncFunction(callback, ms) {
         setTimeout(() => {
             callback();
+        }, ms);
+    }
+
+    function asyncFunction(callback, data, ms) {
+        setTimeout(() => {
+            callback(data);
         }, ms);
     }
 
@@ -143,4 +192,7 @@ $(function () {
             files = data;
         }, 200);
     })
+
+    // show  all data begin run
+    asyncFunction(getAll, 1);
 });
