@@ -1,6 +1,8 @@
 {
     "cSpell.words": [
         "Cranfield",
+        "Tfidf",
+        "Vectorizer",
         "chua",
         "csrf",
         "csrfmiddlewaretoken",
@@ -9,6 +11,7 @@
         "hình",
         "inputfile",
         "n",
+        "ngram",
         "nh",
         "nhân",
         "nltk",

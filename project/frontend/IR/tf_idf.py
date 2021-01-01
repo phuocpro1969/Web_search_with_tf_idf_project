@@ -2,6 +2,7 @@ import math
 import os
 import pickle
 import re
+import string
 
 import nltk
 from data.models import Data
@@ -15,8 +16,10 @@ except:
     nltk.download("stopwords")
     nltk.download("punkt")
 
+# cleared text
 
-def preprocess_text(text):
+
+def remove_special_character(text):
     processed_text = text.lower()
     processed_text = processed_text.replace("’", "'")
     processed_text = processed_text.replace("“", '"')
@@ -28,37 +31,56 @@ def preprocess_text(text):
     return processed_text
 
 
+def remove_stopwords(text):  # step 1
+    stop_words = set(stopwords.words('english'))
+    # xóa stopwords
+    words = [
+        w for w in text.split(" ")
+        if w not in stop_words
+    ]
+    return ' '.join(words)
+
+
+def remove_punctuation(text):  # step 2
+    words = [
+        char for char in text.split(" ")
+        if char not in string.punctuation
+    ]
+    return " ".join(words)
+
+
+def remove_stem(text):  # step 3
+    porter = PorterStemmer()
+    token_words = word_tokenize(text)
+    words = [
+        porter.stem(word) for word in token_words
+    ]
+    return " ".join(words)
+
+
+def clear_text(text):
+    # processing
+    text = text.lower()
+    text = remove_stopwords(text)
+    text = remove_special_character(text)
+    text = remove_punctuation(text)
+    text = remove_stem(text)
+
+    return text
+
+
+def get_words_from_text(text):
+    words = [w for w in text.split()]
+    return words
+
+# Read data
+
+
 def get_text_from_file(filename):
     with open(filename, encoding='cp1252', mode='r') as f:
         text = f.read()
     f.close()
     return text
-
-
-def stemSentence(sentence):
-    porter = PorterStemmer()
-    token_words = word_tokenize(sentence)
-    # fd = FreqDist(token_words)
-    # fd.plot()
-    stem_sentence = []
-    for word in token_words:
-        stem_sentence.append(porter.stem(word))
-        stem_sentence.append(" ")
-    return "".join(stem_sentence)
-
-
-def get_words_from_text(text):
-    text = stemSentence(text)
-    stop_words = set(stopwords.words('english'))
-    processed_text = preprocess_text(text)
-
-    # xóa stopwords
-    words = [
-        w for w in processed_text.split()
-        if w not in stop_words
-    ]
-
-    return words
 
 
 def build_inverted_index(docs_path):
@@ -69,21 +91,20 @@ def build_inverted_index(docs_path):
         arr_file.append(doc_file.split('.')[0])
         filename = os.path.join(docs_path, doc_file)
         text = get_text_from_file(filename)
-        words = get_words_from_text(text)
-
+        words = get_words_from_text(clear_text(text))
+        len_word_in_doc = len(words)
         for word in words:
             if word not in arr.keys():
                 arr[word] = {'count': 1, 'num_doc': 1, 'index': []}
-                arr[word]['index'].append([id, 1])
+                arr[word]['index'].append([id, 1/len_word_in_doc])
             else:
                 arr[word]['count'] += 1
                 if arr[word]['index'][-1][0] == id:
-                    arr[word]['index'][-1][1] += 1
+                    arr[word]['index'][-1][1] += 1/len_word_in_doc
                 else:
                     arr[word]['index'].append([id, 1])
                     arr[word]['num_doc'] += 1
         id += 1
-
     return arr, arr_file
 
 
@@ -95,16 +116,16 @@ def build_inverted_index_from_database():
     for file in allFiles:
         arr_file.append(file.id)
         text = file.text
-        words = get_words_from_text(text)
-
+        words = get_words_from_text(clear_text(text))
+        len_word_in_doc = len(words)
         for word in words:
             if word not in arr.keys():
                 arr[word] = {'count': 1, 'num_doc': 1, 'index': []}
-                arr[word]['index'].append([id, 1])
+                arr[word]['index'].append([id, 1/len_word_in_doc])
             else:
                 arr[word]['count'] += 1
                 if arr[word]['index'][-1][0] == id:
-                    arr[word]['index'][-1][1] += 1
+                    arr[word]['index'][-1][1] += 1/len_word_in_doc
                 else:
                     arr[word]['index'].append([id, 1])
                     arr[word]['num_doc'] += 1
@@ -113,8 +134,8 @@ def build_inverted_index_from_database():
     return arr, arr_file
 
 
-def calc_tf_idf(count, num_doc, tf):
-    return math.log(tf * (1 + math.log2(count / num_doc)))
+def calc_tf_idf(tf, count, num_doc):
+    return tf * math.log(1 + count / num_doc)
 
 
 def convert_tf_idf_arr(arr):
@@ -122,7 +143,7 @@ def convert_tf_idf_arr(arr):
         arr[keys]['index'] = [
             [
                 item[0],
-                calc_tf_idf(values['count'], values['num_doc'], item[1])
+                calc_tf_idf(item[1], values['count'], values['num_doc'])
             ] for item in values['index']
         ]
     return arr
@@ -206,7 +227,7 @@ def get_data_train_from_database():
 
 def get_relevant_ranking_for_query(query, tf_idf_index, docs_length, arr_file):
     # lấy từ trong query
-    q_words = get_words_from_text(query)
+    q_words = get_words_from_text(clear_text(query))
 
     # đếm từ
     q_word_with_count = dict()
@@ -219,9 +240,9 @@ def get_relevant_ranking_for_query(query, tf_idf_index, docs_length, arr_file):
     # tính tf_idf cho các từ trong query
     tf_idf_for_querry = {
         word: calc_tf_idf(
+            q_word_with_count[word] / len(q_words),
             tf_idf_index[word]['count'],
-            tf_idf_index[word]['num_doc'],
-            q_word_with_count[word]
+            tf_idf_index[word]['num_doc']
         )
         for word in q_word_with_count.keys()
         if word in tf_idf_index.keys()
@@ -291,7 +312,6 @@ def get_data_ground_truth():
 
 def get_Average_Precision(x_retrieved, relevant_docs, arr_file):
     # find R_Precision value
-    # R_TH = 20
     validation_result = {'R': [], 'P': []}
     count = 0
     for i in range(len(relevant_docs)):
