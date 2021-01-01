@@ -57,5 +57,6 @@ class Index(View):
                         str(values[1])
                     ] for keys, values in enumerate(x_retrieved)
                 }
+
                 answerJson = json.dumps(answer)
                 return JsonResponse({'content': answerJson}, status=200)
