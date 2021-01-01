@@ -1,0 +1,100 @@
+1	what similarity laws must be obeyed when constructing aeroelastic models of heated high speed aircraft .
+2	what are the structural and aeroelastic problems associated with flight of high speed aircraft .
+3	what problems of heat conduction in composite slabs have been solved so far .
+4	can a criterion be developed to show empirically the validity of flow solutions for chemically reacting gas mixtures based on the simplifying assumption of instantaneous local chemical equilibrium .
+5	what chemical kinetic system is applicable to hypersonic aerodynamic problems .
+6	what theoretical and experimental guides do we have as to turbulent couette flow behaviour .
+7	is it possible to relate the available pressure distributions for an ogive forebody at zero angle of attack to the lower surface pressures of an equivalent ogive forebody at angle of attack .
+8	what methods -dash exact or approximate -dash are presently available for predicting body pressures at angle of attack.
+9	papers on internal /slip flow/ heat transfer studies .
+10	are real-gas transport properties for air available over a wide range of enthalpies and densities .
+11	is it possible to find an analytical,  similar solution of the strong blast wave problem in the newtonian approximation .
+12	how can the aerodynamic performance of channel flow ground effect machines be calculated .
+13	what is the basic mechanism of the transonic aileron buzz .
+14	papers on shock-sound wave interaction .
+15	material properties of photoelastic materials .
+16	can the transverse potential flow about a body of revolution be calculated efficiently by an electronic computer .
+17	can the three-dimensional problem of a transverse potential flow about a body of revolution be reduced to a two-dimensional problem .
+18	are experimental pressure distributions on bodies of revolution at angle of attack available .
+19	does there exist a good basic treatment of the dynamics of re-entry combining consideration of realistic effects with relative simplicity of results .
+20	has anyone formally determined the influence of joule heating,  produced by the induced current,  in magnetohydrodynamic free convection flows under general conditions .
+21	why does the compressibility transformation fail to correlate the high speed data for helium and air .
+22	did anyone else discover that the turbulent skin friction is not over sensitive to the nature of the variation of the viscosity with temperature .
+23	what progress has been made in research on unsteady aerodynamics .
+24	what are the factors which influence the time required to invert large structural matrices .
+25	does a practical flow follow the theoretical concepts for the interaction between adjacent blade rows of a supersonic cascade .
+26	what is a single approximate formula for the displacement thickness of a laminar boundary layer in compressible flow on a flat plate .
+27	how is the design of ring or part ring wings by linear theory affected by thickness .
+28	what application has the linear theory design of curved wings .
+29	what is the effect of cross sectional shape on the flow over simple delta wings with sharp leading edges .
+30	papers on flow visualization on slender conical wings .
+31	what size of end plate can be safely used to simulate two-dimensional flow conditions over a bluff cylindrical body of finite aspect ratio .
+32	to find an approximate correction for thickness in slender thin-wing theory .
+33	how do interference-free longitudinal stability measurements (made using free-flight models) compare with similar measurements made in a low-blockage wind tunnel .
+34	have wind tunnel interference effects been investigated on a systematic basis .
+35	are there any papers dealing with acoustic wave propagation in reacting gases .
+36	has anyone investigated relaxation effects on gaseous heat transfer to a suddenly heated wall .
+37	are there any theoretical methods for predicting base pressure .
+38	does transition in the hypersonic wake depend on body geometry and size
+39	how can one detect transition phenomena in boundary layers .
+40	how can one detect transition phenomena in hypersonic wakes .
+41	has anyone investigated and developed a simple model for the vortex wake behind a cruciform wing .
+42	what is a criterion that the transonic flow around an airfoil with a round leading edge be validly analyzed by the linearized transonic flow theory .
+43	can the transonic flow around an arbitrary smooth thin airfoil be analysed in a simple approximate way .
+44	what are the details of the rigorous kinetic theory of gases . (chapman-enskog theory) .
+45	has anyone investigated the effect of surface mass transfer on hypersonic viscous interactions .
+46	what is the combined effect of surface heat and mass transfer on hypersonic flow .
+47	what are the existing solutions for hypersonic viscous interactions over an insulated flat plate .
+48	what controls leading-edge attachment at transonic speeds .
+49	can the three-point boundary-value problem for the blasius equation be integrated numerically,  using suitable transformations,  without iteration on the boundary conditions .
+50	what are the effects of small amounts of gas rarefaction on the characteristics of the boundary layers on slender bodies of revolution .
+51	what is the available information pertaining to boundary layers on very slender bodies of revolution in continuum flow (the transverse curvature  effect) .
+52	what is the available information pertaining to the effect of slight rarefaction on boundary layer flows (the slip effect) .
+53	what investigations have been made of the flow field about a body moving through a rarefied,  partially ionized gas in the presence of a magnetic field .
+54	how is the heat transfer downstream of the mass transfer region effected by mass transfer at the nose of a blunted cone .
+55	to what extent can the available information for incompressible boundary layers be applied to problems involving compressible boundary layers .
+56	to what extent can readily available steady-state aerodynamic data be utilized to predict lifting-surface flutter characteristics .
+57	what are the significant steady and non-steady flow characteristics which affect the flutter mechanism .
+58	is it possible to determine rates of forced convective heat transfer from heated cylinders of non-circular cross-section,  (the fluid flow being along the generators) .
+59	how much is known about boundary layer flows along non-circular cylinders .
+60	is there any simple,  but practical,  method for numerical integration of the mixing problem (i.e. the blasius problem with three-point boundary conditions) .
+61	does there exist a closed-form expression for the local heat transfer around a yawed cylinder .
+62	how far around a cylinder and under what conditions of flow,  if any, is the velocity just outside of the boundary layer a linear function of the distance around the cylinder .
+63	where can i find pressure data on surfaces of swept cylinders .
+64	can't the static deflection shapes be used in predicting flutter in place of vibrational shapes . if so,  can we provide a justification by means of an example .
+65	does the boundary layer on a flat plate in a shear flow induce a pressure gradient .
+66	can the procedure of matching inner and outer solutions for a viscous flow problem be applied when the main stream is a shear flow .
+67	can series expansions be found for the boundary layer on a flat plate in a shear flow .
+68	what possible techniques are available for computing the injection distribution corresponding to an isothermal transpiration cooled hemisphere .
+69	what is known regarding asymptotic solutions to the exact boundary layer equations .
+70	previous solutions to the boundary layer similarity equations .
+71	experimental results on hypersonic viscous interaction .
+72	what has been done about viscous interactions in relatively low reynolds number flows,  particularly at high mach numbers .
+73	what role does the effect of chemical reaction (particularly when out of equilibrium) play in the similitude laws governing hypersonic flows over slender aerodynamic bodies .
+74	how significant is the possible pressure of a dissociated free stream with respect to the realization of hypersonic simulation in high enthalpy wind tunnels .
+75	do the discrepancies among current analyses of the vorticity effect on stagnation-point heat transfer result primarily from the differences in the viscosity-temperature law assumed .
+76	how far can one trust the linear viscosity-temperature solution assumed in some of the analyses of hypersonic shock layer at low reynolds number .
+77	how close is the comparison of the shock layer theory with existing experiments in the low reynolds number (merged-layer) regime .
+78	has anyone explained the kink in the surge line of a multi-stage axial compressor .
+79	have any aerodynamic derivatives been measured at hypersonic mach numbers and comparison been made with theoretical work .
+80	are methods of measuring aerodynamic derivatives available which could be adopted for use in short running time facilities .
+81	what are wind-tunnel corrections for a two-dimensional aerofoil mounted off-centre in a tunnel .
+82	how do kuchemann's and multhopp's methods for calculating lift distributions on swept wings in subsonic flow compare with each other and with experiment .
+83	what is the present state of the theory of quasi-conical flows .
+84	references on the methods available for accurately estimating aerodynamic heat transfer to conical bodies for both laminar and turbulent flow .
+85	what parameters can seriously influence natural transition from laminar to turbulent flow on a model in a wind tunnel .
+86	can a satisfactory experimental technique be developed for measuring oscillatory derivatives on slender sting-mounted models in supersonic wind tunnels .
+87	what effect has the boundary layer in modifying the basic inviscid flow behind the shock,  neglecting effects of leading edge and corner .
+88	how does a satellite orbit contract under the action of air drag in an atmosphere in which the scale height varies with altitude .
+89	how is the flow at transonic speeds about a delta wing different from that on a closely-related tapered sweptback wing .
+90	recent data on shock-induced boundary-layer separation .
+91	what interference effects are likely at transonic speeds .
+92	given complete freedom in the design of an airplane,  what procedure would be used in order to minimize sonic boom intensity,  and is there a limit to the degree of minimizing that can be accomplished .
+93	can methane-air combustion product be used as a hypersonic test medium and predict, within experimental accuracies, the results obtained in air .
+94	what is the theoretical heat transfer rate at the stagnation point of a blunt body .
+95	what is the theoretical heat transfer distribution around a hemisphere .
+96	has anyone investigated the unsteady lift distributions on finite wings in subsonic flow .
+97	what information is available for dynamic response of airplanes to gusts  or blasts in the subsonic regime .
+98	will forward or apex located controls be effective at low subsonic speeds and how do they compare with conventional trailing-edge flaps .
+99	given that an uncontrolled vehicle will tumble as it enters an atmosphere, is it possible to predict when and how it will stop tumbling and its subsequent motion .
+100	what are the effects of initial imperfections on the elastic buckling of cylindrical shells under axial compression .
