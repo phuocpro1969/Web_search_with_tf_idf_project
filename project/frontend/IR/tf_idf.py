@@ -3,9 +3,9 @@ import os
 import pickle
 import re
 import string
+import time
 
 import nltk
-from data.models import Data
 
 try:
     from nltk import sent_tokenize, word_tokenize
@@ -109,6 +109,7 @@ def build_inverted_index(docs_path):
 
 
 def build_inverted_index_from_database():
+    from data.models import Data
     arr = dict()
     arr_file = []
     id = 0
@@ -137,7 +138,7 @@ def build_inverted_index_from_database():
 
 
 def calc_tf_idf(tf, count, num_doc):
-    return tf * math.log(1 + count / num_doc)
+    return math.log(1 + tf) * math.log(1 + count / num_doc)
 
 
 def convert_tf_idf_arr(arr):
@@ -203,6 +204,7 @@ def get_data_train():
 
 
 def get_data_train_from_database():
+    from data.models import Data
     INPUT_ROOT = os.path.abspath(os.path.dirname(__file__))
     try:
         pkl_file = open(os.path.join(
@@ -290,6 +292,12 @@ def get_relevant_ranking_for_query(query, tf_idf_index, docs_length, arr_file):
     for key in q_score.keys():
         q_score[key] = q_score[key] / (docs_length[key] * (q_length + 0.01))
 
+    q_score = {
+        key: value
+        for key, value in q_score.items()
+        if value >= 0.01
+    }
+
     x_retrieved = sorted(
         q_score.items(), key=lambda item: item[1], reverse=True)
 
@@ -360,6 +368,7 @@ def main():
         for key, value in list_of_x_retrieved.items()
     }
     MAP = 0
+
     for key, value in Average_precision_of_all_x_retrieved.items():
         MAP += value
     MAP = MAP / len(Average_precision_of_all_x_retrieved)
