@@ -29,12 +29,12 @@ class Index(View):
             if use == "reTrain":
                 # delete datatrain
                 file_path = os.path.join(self.INPUT_ROOT, "IR", 'input',
-                                         'data', 'inverted.pickle')
+                                         'data', 'inverted_2.pickle')
                 if os.path.exists(file_path):
                     os.remove(file_path)
 
                 file_path = os.path.join(self.INPUT_ROOT, "IR", 'input',
-                                         'data', 'index.pickle')
+                                         'data', 'index_2.pickle')
                 if os.path.exists(file_path):
                     os.remove(file_path)
 

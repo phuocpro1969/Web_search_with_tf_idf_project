@@ -249,7 +249,7 @@ def get_relevant_ranking_for_query(query, tf_idf_index, docs_length, arr_file):
 
     if len(q_words) == 0:
         return []
-
+    print(q_words)
     # đếm từ
     q_word_with_count = dict()
     for word in q_words:
