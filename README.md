@@ -16,7 +16,7 @@
 
 ## - Wait and it open in browser 
 ## - If not run, you write in url browser: 
-- http://127.0.0.1:8090/
+- 127.0.0.1:8090/
 ## - Enter 
 
 ## Input first to add file data it accept tail file ".txt" 
