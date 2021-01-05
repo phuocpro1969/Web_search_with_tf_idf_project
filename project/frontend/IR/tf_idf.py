@@ -267,8 +267,6 @@ def get_relevant_ranking_for_query(query, tf_idf_index, docs_length, arr_file):
         if word in tf_idf_index.keys()
     }
 
-    print(tf_idf_for_querry)
-
     # find q length
     q_length = 0
 
