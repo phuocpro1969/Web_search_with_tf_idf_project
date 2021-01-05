@@ -19,19 +19,36 @@ except:
 # cleared text
 
 
-def remove_special_character(text):
+def remove_punctuation(text):
+    words = [
+        char for char in text.split(" ")
+        if char not in string.punctuation
+    ]
+    return " ".join(words)
+
+
+def remove_special_character(text):  # step 1
     processed_text = text.lower()
+    text = remove_punctuation(text)
     processed_text = processed_text.replace("’", "'")
     processed_text = processed_text.replace("“", '"')
     processed_text = processed_text.replace("”", '"')
-
     non_words = re.compile(r"[^A-Za-z']+")
     processed_text = re.sub(non_words, ' ', processed_text)
 
     return processed_text
 
 
-def remove_stopwords(text):  # step 1
+def remove_stem(text):  # step 2
+    porter = PorterStemmer()
+    token_words = word_tokenize(text)
+    words = [
+        porter.stem(word) for word in token_words
+    ]
+    return " ".join(words)
+
+
+def remove_stopwords(text):  # step 3
     stop_words = set(stopwords.words('english'))
     # xóa stopwords
     words = [
@@ -41,30 +58,12 @@ def remove_stopwords(text):  # step 1
     return ' '.join(words)
 
 
-def remove_punctuation(text):  # step 2
-    words = [
-        char for char in text.split(" ")
-        if char not in string.punctuation
-    ]
-    return " ".join(words)
-
-
-def remove_stem(text):  # step 3
-    porter = PorterStemmer()
-    token_words = word_tokenize(text)
-    words = [
-        porter.stem(word) for word in token_words
-    ]
-    return " ".join(words)
-
-
 def clear_text(text):
     # processing
     text = text.lower()
-    text = remove_stopwords(text)
     text = remove_special_character(text)
-    text = remove_punctuation(text)
     text = remove_stem(text)
+    text = remove_stopwords(text)
 
     return text
 
@@ -91,8 +90,7 @@ def get_text_from_file(filename):
 def build_inverted_index(docs_path):
     arr = dict()
     arr_file = []
-    id = 0
-    for doc_file in os.listdir(docs_path):
+    for id, doc_file in enumerate(os.listdir(docs_path)):
         arr_file.append(doc_file.split('.')[0])
         filename = os.path.join(docs_path, doc_file)
         text = get_text_from_file(filename)
@@ -101,15 +99,14 @@ def build_inverted_index(docs_path):
         for word in words:
             if word not in arr.keys():
                 arr[word] = {'count': 1, 'num_doc': 1, 'index': []}
-                arr[word]['index'].append([id, 1/len_word_in_doc])
+                arr[word]['index'].append([id, 1, len_word_in_doc])
             else:
                 arr[word]['count'] += 1
                 if arr[word]['index'][-1][0] == id:
-                    arr[word]['index'][-1][1] += 1/len_word_in_doc
+                    arr[word]['index'][-1][1] += 1
                 else:
-                    arr[word]['index'].append([id, 1])
+                    arr[word]['index'].append([id, 1, len_word_in_doc])
                     arr[word]['num_doc'] += 1
-        id += 1
     return arr, arr_file
 
 
@@ -117,9 +114,8 @@ def build_inverted_index_from_database():
     from data.models import Data
     arr = dict()
     arr_file = []
-    id = 0
     allFiles = Data.objects.all()
-    for file in allFiles:
+    for id, file in enumerate(allFiles):
         arr_file.append(file.id)
         text = file.text
         words = get_words_from_text(clear_text(text))
@@ -127,22 +123,21 @@ def build_inverted_index_from_database():
         for word in words:
             if word not in arr.keys():
                 arr[word] = {'count': 1, 'num_doc': 1, 'index': []}
-                arr[word]['index'].append([id, 1/len_word_in_doc])
+                arr[word]['index'].append([id, 1, len_word_in_doc])
             else:
                 arr[word]['count'] += 1
                 if arr[word]['index'][-1][0] == id:
-                    arr[word]['index'][-1][1] += 1/len_word_in_doc
+                    arr[word]['index'][-1][1] += 1
                 else:
-                    arr[word]['index'].append([id, 1])
+                    arr[word]['index'].append([id, 1, len_word_in_doc])
                     arr[word]['num_doc'] += 1
-        id += 1
 
     return arr, arr_file
 
 # compute tf-idf
 
 
-def calc_tf_idf(tf, count, num_doc):
+def calc_tf_idf(tf, len_word_in_doc, count, num_doc):
     return math.log(1 + tf) * math.log(1 + count / num_doc)
 
 
@@ -151,7 +146,12 @@ def convert_tf_idf_arr(arr):
         arr[keys]['index'] = [
             [
                 item[0],
-                calc_tf_idf(item[1], values['count'], values['num_doc'])
+                calc_tf_idf(
+                    item[1],
+                    item[2],
+                    values['count'],
+                    values['num_doc']
+                )
             ] for item in values['index']
         ]
     return arr
@@ -179,13 +179,13 @@ def get_data_train():
     try:
         # clone if files exist
         pkl_file = open(os.path.join(
-            INPUT_ROOT, 'input/data/inverted_.pickle'), 'rb')
+            INPUT_ROOT, 'input/data/inverted_1.pickle'), 'rb')
         tf_idf_index = pickle.load(pkl_file)
         docs_length = pickle.load(pkl_file)
         pkl_file.close()
 
         pkl_file = open(os.path.join(
-            INPUT_ROOT, 'input/data/index_.pickle'), 'rb')
+            INPUT_ROOT, 'input/data/index_1.pickle'), 'rb')
         arr_file = pickle.load(pkl_file)
         pkl_file.close()
 
@@ -196,12 +196,12 @@ def get_data_train():
         tf_idf_index = convert_tf_idf_arr(arr)
         docs_length = get_vector_length_of_docs(tf_idf_index)
 
-        with open(os.path.join(INPUT_ROOT, 'input', 'data', 'inverted_.pickle'), mode='wb') as f:
+        with open(os.path.join(INPUT_ROOT, 'input', 'data', 'inverted_1.pickle'), mode='wb') as f:
             pickle.dump(tf_idf_index, f)
             pickle.dump(docs_length, f)
         f.close()
 
-        with open(os.path.join(INPUT_ROOT, 'input', 'data', 'index_.pickle'), mode='wb') as f:
+        with open(os.path.join(INPUT_ROOT, 'input', 'data', 'index_1.pickle'), mode='wb') as f:
             pickle.dump(arr_file, f)
         f.close()
 
@@ -213,13 +213,13 @@ def get_data_train_from_database():
     INPUT_ROOT = os.path.abspath(os.path.dirname(__file__))
     try:
         pkl_file = open(os.path.join(
-            INPUT_ROOT, 'input/data/inverted.pickle'), 'rb')
+            INPUT_ROOT, 'input/data/inverted_2.pickle'), 'rb')
         tf_idf_index = pickle.load(pkl_file)
         docs_length = pickle.load(pkl_file)
         pkl_file.close()
 
         pkl_file = open(os.path.join(
-            INPUT_ROOT, 'input/data/index.pickle'), 'rb')
+            INPUT_ROOT, 'input/data/index_2.pickle'), 'rb')
         arr_file = pickle.load(pkl_file)
         pkl_file.close()
 
@@ -228,12 +228,12 @@ def get_data_train_from_database():
         tf_idf_index = convert_tf_idf_arr(arr)
         docs_length = get_vector_length_of_docs(tf_idf_index)
 
-        with open(os.path.join(INPUT_ROOT, 'input', 'data', 'inverted.pickle'), mode='wb') as f:
+        with open(os.path.join(INPUT_ROOT, 'input', 'data', 'inverted_2.pickle'), mode='wb') as f:
             pickle.dump(tf_idf_index, f)
             pickle.dump(docs_length, f)
         f.close()
 
-        with open(os.path.join(INPUT_ROOT, 'input', 'data', 'index.pickle'), mode='wb') as f:
+        with open(os.path.join(INPUT_ROOT, 'input', 'data', 'index_2.pickle'), mode='wb') as f:
             pickle.dump(arr_file, f)
         f.close()
 
@@ -264,7 +264,8 @@ def get_relevant_ranking_for_query(query, tf_idf_index, docs_length, arr_file):
     # compute tf-idf query
     tf_idf_for_querry = {
         word: calc_tf_idf(
-            q_word_with_count[word] / len(q_words),
+            q_word_with_count[word],
+            len(q_word_with_count),
             tf_idf_index[word]['count'],
             tf_idf_index[word]['num_doc']
         )
@@ -365,6 +366,7 @@ def get_Average_Precision(x_retrieved, relevant_docs, arr_file):
 
 def main():
     tf_idf_index, docs_length, arr_file = get_data_train()
+
     queries = open_queries()
     list_of_x_retrieved = dict()
     for key, value in queries.items():
