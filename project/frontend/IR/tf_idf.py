@@ -131,7 +131,6 @@ def build_inverted_index_from_database():
                 else:
                     arr[word]['index'].append([id, 1, len_word_in_doc])
                     arr[word]['num_doc'] += 1
-
     return arr, arr_file
 
 # compute tf-idf
@@ -246,10 +245,8 @@ def get_relevant_ranking_for_query(query, tf_idf_index, docs_length, arr_file):
     # lấy từ trong query
     q_words = get_words_from_text_in_vocabulary(
         clear_text(query), tf_idf_index.keys())
-
     if len(q_words) == 0:
         return []
-    print(q_words)
     # đếm từ
     q_word_with_count = dict()
     for word in q_words:
@@ -257,9 +254,6 @@ def get_relevant_ranking_for_query(query, tf_idf_index, docs_length, arr_file):
             q_word_with_count[word] = 1
         else:
             q_word_with_count[word] += 1
-
-    if len(q_word_with_count) == 0:
-        return []
 
     # compute tf-idf query
     tf_idf_for_querry = {
@@ -272,6 +266,9 @@ def get_relevant_ranking_for_query(query, tf_idf_index, docs_length, arr_file):
         for word in q_word_with_count.keys()
         if word in tf_idf_index.keys()
     }
+
+    print(tf_idf_for_querry)
+
     # find q length
     q_length = 0
 

@@ -59,7 +59,6 @@ $(function () {
 
     function renderHtmlAnswers(content) {
         let html = "";
-        console.log(content.length)
         if (content.length === 0 || content === null) {
             html = `<h1 class="text-center" style="color:red;">No data found.</h1>`;
         }
